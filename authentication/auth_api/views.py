@@ -3,12 +3,11 @@ from django.http import JsonResponse
 from auth_api.models import CustomUser
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
-# from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from django.contrib.auth.hashers import make_password, check_password
 from django.core import serializers
 from django.http import JsonResponse
-from django.contrib.auth.hashers import check_password
 import json
 # from .models import CustomUser
 
