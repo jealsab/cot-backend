@@ -12,16 +12,21 @@ from django.core import serializers
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMessage, BadHeaderError
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes
 from django.conf import settings
 from django.core.mail import send_mail
 import secrets
 import string
 from django.utils import timezone
+from django.http import JsonResponse
+from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.hashers import make_password
 
 VERIFICATION_CODE_EXPIRATION_MINUTES = 5
+
+User = get_user_model()
+
+
 
 def generate_key_pair():
     private_key = rsa.generate_private_key(
@@ -47,11 +52,10 @@ def generate_key_pair():
     return private_key_hex, public_key_hex
 
 def generate_verification_code(length=6):
-    characters = string.digits  # Use digits for a numeric verification code
+    characters = string.digits  
     verification_code = ''.join(secrets.choice(characters) for _ in range(length))
     return verification_code
 
-User = get_user_model()
 
 @csrf_exempt
 def signup(request):
